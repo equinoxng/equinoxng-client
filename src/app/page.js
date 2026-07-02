@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import styles from "./page.module.css";
 
 const products = [
@@ -8,6 +8,7 @@ const products = [
     name: "Dash",
     tagline: "Cash Delivery",
     desc: "Send and receive cash in minutes. The fastest way to move cash to anyone, anywhere.",
+    teaser: "Peer-to-peer cash delivery, built for speed and trust.",
     cta: { label: "Join the waitlist", href: "#notify" },
     status: "build",
     statusLabel: "In development",
@@ -18,7 +19,7 @@ const products = [
     id: "EQX-02",
     name: "Float",
     tagline: "On-Demand Liquidity",
-    desc: "Salary-linked credit, BNPL, and lending services that flex with your cash flow when you need it most.",
+    desc: "Credit that bends around your paycheck, not the other way around.",
     status: "future",
     statusLabel: "Coming soon",
     target: "Salaried workers & SMEs",
@@ -27,7 +28,7 @@ const products = [
     id: "EQX-03",
     name: "Shield",
     tagline: "Insurance Services",
-    desc: "Straightforward, accessible insurance products built for everyday Nigerians.",
+    desc: "Insurance that actually shows up when you need it. Simple plans, real coverage.",
     status: "future",
     statusLabel: "Coming soon",
     target: "Individuals & households",
@@ -36,7 +37,7 @@ const products = [
     id: "EQX-04",
     name: "Nest",
     tagline: "Long-Term Savings",
-    desc: "Compound-interest savings designed to grow your wealth over time. Set goals, stay disciplined, watch it compound.",
+    desc: "Set a goal, automate it, watch compound interest do the heavy lifting.",
     status: "future",
     statusLabel: "Coming soon",
     target: "Goal-oriented savers",
@@ -45,7 +46,7 @@ const products = [
     id: "EQX-05",
     name: "Mount",
     tagline: "Offline Card Payments",
-    desc: "A virtual card that works even offline. Seamless payments without depending on connectivity.",
+    desc: "A card that doesn't need the internet to work. Pay anywhere, every time.",
     status: "future",
     statusLabel: "Coming soon",
     target: "Merchants & consumers",
@@ -82,8 +83,62 @@ const outlook = [
   },
 ];
 
+const NAV_SECTIONS = ["lineup", "outlook", "notify"];
+
+function IconLinkedIn() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+      <rect x="2" y="9" width="4" height="12"/>
+      <circle cx="4" cy="4" r="2"/>
+    </svg>
+  );
+}
+
+function IconInstagram() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
+      <circle cx="12" cy="12" r="4"/>
+      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+    </svg>
+  );
+}
+
+function IconFacebook() {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+    </svg>
+  );
+}
+
+function IconChevron() {
+  return (
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9"/>
+    </svg>
+  );
+}
+
 export default function Home() {
   const [submitted, setSubmitted] = useState(false);
+  const [activeSection, setActiveSection] = useState(null);
+  const observerRef = useRef(null);
+
+  useEffect(() => {
+    const sections = NAV_SECTIONS.map((id) => document.getElementById(id)).filter(Boolean);
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) setActiveSection(entry.target.id);
+        });
+      },
+      { rootMargin: "-40% 0px -55% 0px" }
+    );
+    sections.forEach((s) => observerRef.current.observe(s));
+    return () => observerRef.current?.disconnect();
+  }, []);
 
   return (
     <div className={styles.root}>
@@ -93,8 +148,8 @@ export default function Home() {
       {/* Announcement bar */}
       <div className={styles.announce}>
         <span className={styles.announceDot} />
-        <span>Dash is in development.</span>
-        <a href="#notify" className={styles.announceLink}>Join the waitlist →</a>
+        <span>Dash is coming.</span>
+        <a href="#notify" className={styles.announceLink}>Get early access →</a>
       </div>
 
       <div className={styles.wrap}>
@@ -102,13 +157,30 @@ export default function Home() {
         <header className={styles.header}>
           <div className={styles.mark}>
             <span className={styles.markDot} />
-            <span className={styles.markName}>equinox</span>
-            <span className={styles.markAccent}>ng</span>
+            <div className={styles.markText}>
+              <div>
+                <span className={styles.markName}>equinox</span>
+                <span className={styles.markAccent}>ng</span>
+              </div>
+              <span className={styles.markTagline}>Digital Made Easy</span>
+            </div>
           </div>
           <nav className={styles.nav}>
-            <a href="#lineup">Lineup</a>
-            <a href="#outlook">Outlook</a>
-            <a href="#notify">Get notified</a>
+            {NAV_SECTIONS.slice(0, -1).map((id) => (
+              <a
+                key={id}
+                href={`#${id}`}
+                className={`${styles.navLink} ${activeSection === id ? styles.navLinkActive : ""}`}
+              >
+                {id === "lineup" ? "Lineup" : "Outlook"}
+              </a>
+            ))}
+            <a
+              href="#notify"
+              className={`${styles.navLink} ${activeSection === "notify" ? styles.navLinkActive : ""}`}
+            >
+              Get notified
+            </a>
             <a href="mailto:hello@equinoxng.com" className={styles.navContact}>Contact</a>
           </nav>
         </header>
@@ -128,7 +200,26 @@ export default function Home() {
             <a href="#lineup" className={`${styles.btn} ${styles.btnPrimary}`}>View the lineup →</a>
             <a href="#notify" className={styles.heroTextLink}>Get notified</a>
           </div>
+          <a href="#lineup" className={styles.scrollHint} aria-label="Scroll down">
+            <IconChevron />
+          </a>
         </section>
+
+        {/* Trust strip */}
+        <div className={styles.trustStrip}>
+          <span className={styles.trustItem}>
+            <span className={styles.trustDot} />
+            CAC Registered · Private Company Limited by Shares
+          </span>
+          <span className={styles.trustItem}>
+            <span className={styles.trustDot} />
+            Incorporated August 2025
+          </span>
+          <span className={styles.trustItem}>
+            <span className={styles.trustDot} />
+            www.equinoxng.com
+          </span>
+        </div>
 
         {/* Stat strip */}
         <div className={styles.statStrip}>
@@ -209,17 +300,30 @@ export default function Home() {
               {submitted ? "Added ✓" : "Notify me"}
             </button>
           </form>
+          <p className={styles.privacyNote}>We don't share your email. Ever.</p>
         </section>
 
         <footer className={styles.footer}>
           <div className={styles.footerLeft}>
-            <span>© {new Date().getFullYear()} equinoxng.</span>
-            <span className={styles.footerMeta}>Registered in Nigeria</span>
+            <span>© {new Date().getFullYear()} equinoxng Digital Services Ltd.</span>
+<div className={styles.footerSocial}>
+              <a href="https://linkedin.com/company/equinoxng" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink} aria-label="LinkedIn">
+                <IconLinkedIn /> LinkedIn
+              </a>
+              <span className={styles.footerDivider}>·</span>
+              <a href="https://instagram.com/equinoxng" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink} aria-label="Instagram">
+                <IconInstagram /> Instagram
+              </a>
+              <span className={styles.footerDivider}>·</span>
+              <a href="https://web.facebook.com/profile.php?id=61584780592423" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink} aria-label="Facebook">
+                <IconFacebook /> Facebook
+              </a>
+            </div>
           </div>
           <div className={styles.footerRight}>
             <span className={styles.footerLabel}>Get in touch</span>
             <a href="mailto:hello@equinoxng.com" className={styles.footerLink}>hello@equinoxng.com</a>
-            <span>Lagos, Nigeria</span>
+            <a href="https://www.equinoxng.com" className={styles.footerLink}>www.equinoxng.com</a>
           </div>
         </footer>
       </div>

@@ -4,11 +4,12 @@
   --paper: #F6F4EE;
   --line: rgba(246, 244, 238, 0.10);
   --line-strong: rgba(246, 244, 238, 0.22);
-  --accent: #E8B84B;
-  --accent-dim: rgba(232, 184, 75, 0.15);
+  --accent: #22C55E;
+  --accent-dim: rgba(34, 197, 94, 0.12);
+  --accent-deep: #15803D;
   --mute: #7A8499;
-  --ok: #5FD3A0;
-  --ok-dim: rgba(95, 211, 160, 0.10);
+  --ok: #22C55E;
+  --ok-dim: rgba(34, 197, 94, 0.10);
   --pending: #E8C547;
   --pending-dim: rgba(232, 197, 71, 0.10);
 }
