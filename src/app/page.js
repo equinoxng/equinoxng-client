@@ -121,10 +121,38 @@ function IconChevron() {
   );
 }
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_BASE_URL || "http://localhost:8080";
+
 export default function Home() {
-  const [submitted, setSubmitted] = useState(false);
+  const [email, setEmail] = useState("");
+  const [waitlistStatus, setWaitlistStatus] = useState("idle"); // idle | loading | success | error
+  const [waitlistError, setWaitlistError] = useState("");
   const [activeSection, setActiveSection] = useState(null);
   const observerRef = useRef(null);
+
+  async function handleWaitlistSubmit(e) {
+    e.preventDefault();
+    setWaitlistStatus("loading");
+    setWaitlistError("");
+
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/waitlist`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, product: "DASH" }),
+      });
+
+      if (!res.ok) {
+        const message = await res.text();
+        throw new Error(message || "Something went wrong. Please try again.");
+      }
+
+      setWaitlistStatus("success");
+    } catch (err) {
+      setWaitlistStatus("error");
+      setWaitlistError(err.message || "Something went wrong. Please try again.");
+    }
+  }
 
   useEffect(() => {
     const sections = NAV_SECTIONS.map((id) => document.getElementById(id)).filter(Boolean);
@@ -291,15 +319,31 @@ export default function Home() {
         <section className={styles.ctaBlock} id="notify">
           <h2 className={styles.ctaTitle}>Dash is coming. Get early access.</h2>
           <p className={styles.ctaSub}>Be the first to know when we launch. No spam, just the signal.</p>
-          <form
-            className={styles.signup}
-            onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}
-          >
-            <input type="email" placeholder="you@example.com" required className={styles.emailInput} />
-            <button type="submit" className={`${styles.btn} ${styles.btnPrimary}`}>
-              {submitted ? "Added ✓" : "Notify me"}
+          <form className={styles.signup} onSubmit={handleWaitlistSubmit}>
+            <input
+              type="email"
+              placeholder="you@example.com"
+              required
+              className={styles.emailInput}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              disabled={waitlistStatus === "loading" || waitlistStatus === "success"}
+            />
+            <button
+              type="submit"
+              className={`${styles.btn} ${styles.btnPrimary}`}
+              disabled={waitlistStatus === "loading" || waitlistStatus === "success"}
+            >
+              {waitlistStatus === "success"
+                ? "Added ✓"
+                : waitlistStatus === "loading"
+                ? "Adding…"
+                : "Notify me"}
             </button>
           </form>
+          {waitlistStatus === "error" && (
+            <p className={styles.privacyNote}>{waitlistError}</p>
+          )}
           <p className={styles.privacyNote}>We don't share your email. Ever.</p>
         </section>
 
