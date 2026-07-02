@@ -18,9 +18,9 @@ const inter = Inter({
 });
 
 export const metadata = {
-  title: "equinoxng - Digital services for everyday life",
+  title: "equinoxng - Digital Made Easy",
   description:
-    "Equinox Nigeria is a digital services provider building simple, impactful solutions for everyday life.",
+    "Equinox Nigeria is a CAC-registered digital services provider building simple, impactful financial solutions for everyday life in Africa.",
 };
 
 export default function RootLayout({ children }) {

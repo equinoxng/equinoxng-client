@@ -104,6 +104,21 @@
   margin-right: 10px;
 }
 
+.markText {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.markTagline {
+  font-size: 9px;
+  font-weight: 400;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0.75;
+}
+
 .markName { color: var(--paper); }
 .markAccent { color: var(--accent); }
 
@@ -118,6 +133,9 @@
 
 .nav a { transition: color 0.2s; }
 .nav a:hover { color: var(--paper); }
+
+.navLink { color: var(--mute); }
+.navLinkActive { color: var(--paper) !important; }
 
 .navContact {
   color: var(--paper) !important;
@@ -194,6 +212,49 @@
 }
 
 .heroTextLink:hover { color: var(--paper); }
+
+.scrollHint {
+  display: inline-flex;
+  margin-top: 56px;
+  color: var(--mute);
+  opacity: 0.5;
+  animation: bounce 2s ease-in-out infinite;
+  transition: opacity 0.2s;
+}
+
+.scrollHint:hover { opacity: 1; }
+
+@keyframes bounce {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* Trust strip */
+.trustStrip {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  padding: 14px 0 48px;
+  flex-wrap: wrap;
+}
+
+.trustItem {
+  font-family: var(--font-mono), monospace;
+  font-size: 11.5px;
+  color: var(--mute);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.trustDot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--accent);
+  flex-shrink: 0;
+  opacity: 0.7;
+}
 
 /* Stat strip */
 .statStrip {
@@ -388,8 +449,10 @@
   color: var(--mute);
   line-height: 1.55;
   max-width: 380px;
-  margin: 0 0 14px;
+  margin: 0;
 }
+
+.prodDesc + .prodCta { margin-top: 14px; display: block; }
 
 .prodCta {
   font-family: var(--font-mono), monospace;
@@ -491,6 +554,14 @@
   border-color: transparent;
 }
 
+.privacyNote {
+  font-family: var(--font-mono), monospace;
+  font-size: 11px;
+  color: var(--mute);
+  margin-top: 12px;
+  opacity: 0.6;
+}
+
 /* Footer */
 .footer {
   border-top: 1px solid var(--line);
@@ -530,6 +601,25 @@
   opacity: 0.5;
   margin-bottom: 2px;
 }
+
+.footerSocial {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+.footerDivider { opacity: 0.3; }
+
+.footerSocialLink {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  color: var(--mute);
+  transition: color 0.2s;
+}
+
+.footerSocialLink:hover { color: var(--paper); }
 
 .footerLink {
   color: var(--mute);
