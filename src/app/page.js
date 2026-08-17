@@ -221,8 +221,7 @@ export default function Home() {
             <em>for everyday life in Africa.</em>
           </h1>
           <p className={styles.heroSub}>
-            Equinox Nigeria builds a connected suite of financial tools, starting with cash access
-            and expanding across savings, insurance, credit, and beyond.
+            Equinox Nigeria is a digital services provider building simple, impactful solutions for everyday life. We're starting with cash access and paving the way for a broader suite of digital solutions across Africa and beyond.
           </p>
           <div className={styles.heroActions}>
             <a href="#lineup" className={`${styles.btn} ${styles.btnPrimary}`}>View the lineup →</a>
