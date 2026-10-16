@@ -20,6 +20,7 @@ export default function Image() {
           fontFamily: "sans-serif",
         }}
       >
+        <div style={{ position: "absolute", top: 0, left: 0, width: 1200, height: 6, background: "#7C3AED" }} />
         {/* Top: logo mark + wordmark */}
         <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
           <div style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
