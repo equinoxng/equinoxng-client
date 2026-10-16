@@ -3,16 +3,20 @@ import { useState, useEffect, useRef } from "react";
 import styles from "./page.module.css";
 
 const marquee = [
-  "Send cash in minutes",
-  "Peer-to-peer",
-  "Anyone, anywhere",
-  "Built for speed",
-  "Built for trust",
-  "In development",
+  "Pay in USD",
+  "Pay in GBP",
+  "Pay in NGN",
+  "Pay in crypto",
+  "Receive physical naira",
+  "Hand delivered",
+  "In minutes",
 ];
 
+const payMethods = ["USD", "GBP", "NGN", "Crypto"];
+
 const dashSpecs = [
-  { label: "Built for", value: "Individuals & families" },
+  { label: "Pay in", value: "USD · GBP · NGN · Crypto" },
+  { label: "They receive", value: "Physical naira, by hand" },
   { label: "Speed", value: "Minutes, not days" },
   { label: "Status", value: "In development" },
 ];
@@ -139,6 +143,8 @@ export default function Home() {
 
   return (
     <div className={styles.root}>
+      <div className={styles.grain} aria-hidden="true" />
+
       {/* Nav */}
       <header className={styles.header}>
         <a href="#top" className={styles.markBox} aria-label="equinoxng, home">
@@ -167,26 +173,34 @@ export default function Home() {
 
       {/* Hero */}
       <section className={styles.hero} id="top">
-        <h1 className={styles.wordmark}>equinoxng</h1>
-        <p className={styles.heroLine}>
-          Simple, impactful products <em>for everyday life.</em>
-        </p>
-        <p className={styles.heroSub}>
-          Equinox Nigeria is a digital services provider. We build things people actually
-          use — and we&apos;re starting with Dash.
-        </p>
-        <div className={styles.heroActions}>
-          <a href="#waitlist" className={styles.btnPrimary}>
-            Join the waitlist
-          </a>
-          <a href="#dash" className={styles.btnGhost}>
-            About Dash
-          </a>
+        <div className={styles.halo} aria-hidden="true">
+          <span className={styles.ring} />
+          <span className={styles.ring} />
+          <span className={styles.ring} />
         </div>
-        <p className={styles.heroMeta}>
-          Lagos, Nigeria <span aria-hidden="true">·</span> Founded 2025{" "}
-          <span aria-hidden="true">·</span> Digital services
-        </p>
+
+        <div className={styles.heroInner}>
+          <h1 className={styles.wordmark}>equinoxng</h1>
+          <p className={styles.heroLine}>
+            Simple, impactful products <em>for everyday life.</em>
+          </p>
+          <p className={styles.heroSub}>
+            Equinox Nigeria is a digital services provider. We build things people actually
+            use &mdash; and we&apos;re starting with Dash.
+          </p>
+          <div className={styles.heroActions}>
+            <a href="#waitlist" className={styles.btnPrimary}>
+              Join the waitlist
+            </a>
+            <a href="#dash" className={styles.btnGhost}>
+              About Dash
+            </a>
+          </div>
+          <p className={styles.heroMeta}>
+            Lagos, Nigeria <span aria-hidden="true">·</span> Founded 2025{" "}
+            <span aria-hidden="true">·</span> Digital services
+          </p>
+        </div>
       </section>
 
       {/* Marquee */}
@@ -211,27 +225,66 @@ export default function Home() {
         <span className={styles.sectionNote}>In development</span>
       </div>
 
-      <section className={styles.dash}>
-        <div className={styles.dashMain}>
-          <h2 className={styles.dashName}>Dash</h2>
-          <p className={styles.dashTag}>Cash delivery</p>
-          <p className={styles.dashBody}>
-            Send and receive cash in minutes. Peer-to-peer cash delivery, built for speed
-            and trust — the fastest way to move cash to anyone, anywhere.
-          </p>
-          <a href="#waitlist" className={styles.btnPrimary}>
-            Join the Dash waitlist
-          </a>
-        </div>
-        <dl className={styles.specs}>
-          {dashSpecs.map((s) => (
-            <div className={styles.specRow} key={s.label}>
-              <dt className={styles.specLabel}>{s.label}</dt>
-              <dd className={styles.specValue}>{s.value}</dd>
+      <div className={styles.dashBand}>
+        <section className={styles.dash}>
+          <div className={styles.dashMain}>
+            <h2 className={styles.dashName}>Dash</h2>
+            <p className={styles.dashTag}>Cash delivery</p>
+            <p className={styles.dashBody}>
+              Pay in dollars, pounds, naira or crypto. Your recipient gets physical naira,
+              delivered into their hands &mdash; in minutes, not days.
+            </p>
+            <a href="#waitlist" className={styles.btnPrimary}>
+              Join the Dash waitlist
+            </a>
+          </div>
+
+          <dl className={styles.specs}>
+            {dashSpecs.map((s) => (
+              <div className={styles.specRow} key={s.label}>
+                <dt className={styles.specLabel}>{s.label}</dt>
+                <dd className={styles.specValue}>{s.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </section>
+
+        {/* Corridor: how Dash works */}
+        <figure className={styles.corridor}>
+          <figcaption className={styles.corridorCap}>How Dash works</figcaption>
+
+          <div className={styles.flow}>
+            <div className={styles.flowSide}>
+              <span className={styles.flowLabel}>You pay in</span>
+              <ul className={styles.payList}>
+                {payMethods.map((m) => (
+                  <li className={styles.payChip} key={m}>
+                    {m}
+                  </li>
+                ))}
+              </ul>
             </div>
-          ))}
-        </dl>
-      </section>
+
+            <div className={styles.rail} aria-hidden="true">
+              <span className={styles.railTrack} />
+              <span className={styles.railPulse} />
+              <span className={styles.railCap}>Dash</span>
+            </div>
+
+            <div className={styles.flowSide}>
+              <span className={styles.flowLabel}>They receive</span>
+              <div className={styles.receive}>
+                <span className={styles.naira} aria-hidden="true">
+                  &#8358;
+                </span>
+                <span className={styles.receiveText}>
+                  Physical naira, delivered by hand
+                </span>
+              </div>
+            </div>
+          </div>
+        </figure>
+      </div>
 
       {/* Approach */}
       <div className={styles.sectionBar} id="approach">
@@ -242,7 +295,9 @@ export default function Home() {
       <section className={styles.approach}>
         {approach.map((a) => (
           <article className={styles.approachItem} key={a.num}>
-            <span className={styles.approachNum}>{a.num}</span>
+            <span className={styles.approachNum} aria-hidden="true">
+              {a.num}
+            </span>
             <h3 className={styles.approachTitle}>{a.title}</h3>
             <p className={styles.approachBody}>{a.body}</p>
           </article>
@@ -308,32 +363,34 @@ export default function Home() {
 
       {/* Footer */}
       <footer className={styles.footer}>
-        <div className={styles.footerLeft}>
-          <span className={styles.footerMark}>
+        <div className={styles.footerTop}>
+          <a href="#top" className={styles.footerBrand} aria-label="equinoxng, back to top">
             <Mark />
-          </span>
+            <span>equinoxng</span>
+          </a>
+          <div className={styles.footerRight}>
+            <a href="mailto:hello@equinoxng.com" className={styles.footerLink}>
+              hello@equinoxng.com
+            </a>
+            <a href="https://www.equinoxng.com" className={styles.footerLink}>
+              www.equinoxng.com
+            </a>
+          </div>
+        </div>
+
+        <div className={styles.footerBottom}>
           <span>© {new Date().getFullYear()} equinoxng Digital Services Ltd.</span>
-        </div>
-
-        <div className={styles.footerSocial}>
-          <a href="https://linkedin.com/company/equinoxng" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink}>
-            <IconLinkedIn /> LinkedIn
-          </a>
-          <a href="https://instagram.com/equinoxng" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink}>
-            <IconInstagram /> Instagram
-          </a>
-          <a href="https://web.facebook.com/profile.php?id=61584780592423" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink}>
-            <IconFacebook /> Facebook
-          </a>
-        </div>
-
-        <div className={styles.footerRight}>
-          <a href="mailto:hello@equinoxng.com" className={styles.footerLink}>
-            hello@equinoxng.com
-          </a>
-          <a href="https://www.equinoxng.com" className={styles.footerLink}>
-            www.equinoxng.com
-          </a>
+          <div className={styles.footerSocial}>
+            <a href="https://linkedin.com/company/equinoxng" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink}>
+              <IconLinkedIn /> LinkedIn
+            </a>
+            <a href="https://instagram.com/equinoxng" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink}>
+              <IconInstagram /> Instagram
+            </a>
+            <a href="https://web.facebook.com/profile.php?id=61584780592423" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink}>
+              <IconFacebook /> Facebook
+            </a>
+          </div>
         </div>
       </footer>
     </div>

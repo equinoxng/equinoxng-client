@@ -13,9 +13,11 @@
   --line: rgba(242, 241, 238, 0.14);
   --line-strong: rgba(242, 241, 238, 0.28);
 
-  /* Accent — used as a fill at size, or as --accent-text when small */
-  --accent: #2D81FF;
-  --accent-text: #74AAFF;
+  /* Accent — #7C3AED is a fill (carries --paper text at 5.05:1);
+     --accent-text is the only purple safe for small text on --void (6.83:1). */
+  --accent: #7C3AED;
+  --accent-text: #A78BFA;
+  --accent-bright: #C4B5FD;
 
   --alert: #FF8A5B;
 }
