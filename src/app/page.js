@@ -2,121 +2,83 @@
 import { useState, useEffect, useRef } from "react";
 import styles from "./page.module.css";
 
-const products = [
-  {
-    id: "EQX-01",
-    name: "Dash",
-    tagline: "Cash Delivery",
-    desc: "Send and receive cash in minutes. The fastest way to move cash to anyone, anywhere.",
-    teaser: "Peer-to-peer cash delivery, built for speed and trust.",
-    cta: { label: "Join the waitlist", href: "#notify" },
-    status: "build",
-    statusLabel: "In development",
-    target: "Individuals & families",
-    featured: true,
-  },
-  {
-    id: "EQX-02",
-    name: "Float",
-    tagline: "On-Demand Liquidity",
-    desc: "Credit that bends around your paycheck, not the other way around.",
-    status: "future",
-    statusLabel: "Coming soon",
-    target: "Salaried workers & SMEs",
-  },
-  {
-    id: "EQX-03",
-    name: "Shield",
-    tagline: "Insurance Services",
-    desc: "Insurance that actually shows up when you need it. Simple plans, real coverage.",
-    status: "future",
-    statusLabel: "Coming soon",
-    target: "Individuals & households",
-  },
-  {
-    id: "EQX-04",
-    name: "Nest",
-    tagline: "Long-Term Savings",
-    desc: "Set a goal, automate it, watch compound interest do the heavy lifting.",
-    status: "future",
-    statusLabel: "Coming soon",
-    target: "Goal-oriented savers",
-  },
-  {
-    id: "EQX-05",
-    name: "Mount",
-    tagline: "Offline Card Payments",
-    desc: "A card that doesn't need the internet to work. Pay anywhere, every time.",
-    status: "future",
-    statusLabel: "Coming soon",
-    target: "Merchants & consumers",
-  },
+const marquee = [
+  "Send cash in minutes",
+  "Peer-to-peer",
+  "Anyone, anywhere",
+  "Built for speed",
+  "Built for trust",
+  "In development",
 ];
 
-const stats = [
-  { value: "5", label: "Products planned" },
-  { value: "1", label: "In active development" },
-  { value: "2025", label: "Founded" },
-  { value: "Lagos", label: "Headquarters" },
+const dashSpecs = [
+  { label: "Built for", value: "Individuals & families" },
+  { label: "Speed", value: "Minutes, not days" },
+  { label: "Status", value: "In development" },
 ];
 
-const outlook = [
+const approach = [
   {
     num: "01",
     title: "Access before elegance.",
-    body: "Cash that doesn't move, savings that don't exist, insurance that never reaches people. We fix the gap first.",
+    body: "The hard part was never the interface. It's reaching the people the existing options never reached. We close that gap first, and make it beautiful second.",
   },
   {
     num: "02",
     title: "Africa-first by design.",
-    body: "Lagos is the proving ground. Our infrastructure is built for informal economies, patchy connectivity, and the diversity of African financial lives.",
+    body: "Lagos is the proving ground. We build for informal economies, for patchy connectivity, and for the texture of everyday life here — not for a demo on fast wifi.",
   },
   {
     num: "03",
-    title: "One wedge, then depth.",
-    body: "Each product starts narrow on purpose. We earn the right to expand by being indispensable at the first job, then layer in the rest of the suite.",
-  },
-  {
-    num: "04",
-    title: "Connected, not siloed.",
-    body: "Dash, Float, Shield, Nest, Mount. Each stands alone but works better together. One ecosystem, one identity, built over time.",
+    title: "One thing, done properly.",
+    body: "Dash starts narrow on purpose. We earn the right to build more by being indispensable at one job first.",
   },
 ];
 
-const NAV_SECTIONS = ["lineup", "outlook", "notify"];
+const NAV_SECTIONS = ["dash", "approach", "waitlist"];
+
+const NAV_LABELS = {
+  dash: "Dash",
+  approach: "Approach",
+  waitlist: "Waitlist",
+};
 
 function IconLinkedIn() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
-      <rect x="2" y="9" width="4" height="12"/>
-      <circle cx="4" cy="4" r="2"/>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z" />
+      <rect x="2" y="9" width="4" height="12" />
+      <circle cx="4" cy="4" r="2" />
     </svg>
   );
 }
 
 function IconInstagram() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <rect x="2" y="2" width="20" height="20" rx="5" ry="5"/>
-      <circle cx="12" cy="12" r="4"/>
-      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none"/>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" />
+      <circle cx="12" cy="12" r="4" />
+      <circle cx="17.5" cy="6.5" r="0.5" fill="currentColor" stroke="none" />
     </svg>
   );
 }
 
 function IconFacebook() {
   return (
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"/>
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
     </svg>
   );
 }
 
-function IconChevron() {
+function Mark() {
   return (
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <polyline points="6 9 12 15 18 9"/>
+    <svg width="22" height="22" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true">
+      <rect x="12" y="10" width="76" height="12" />
+      <rect x="12" y="27" width="40" height="12" />
+      <rect x="12" y="44" width="76" height="12" />
+      <rect x="12" y="61" width="40" height="12" />
+      <rect x="12" y="78" width="76" height="12" />
     </svg>
   );
 }
@@ -149,8 +111,15 @@ export default function Home() {
 
       setWaitlistStatus("success");
     } catch (err) {
+      // A failed fetch surfaces as a TypeError with an unhelpful message
+      // ("Failed to fetch"), so don't show it to the reader.
+      const isNetworkError = err instanceof TypeError;
       setWaitlistStatus("error");
-      setWaitlistError(err.message || "Something went wrong. Please try again.");
+      setWaitlistError(
+        isNetworkError
+          ? "We couldn't reach the server. Check your connection and try again."
+          : err.message || "Something went wrong. Please try again."
+      );
     }
   }
 
@@ -170,156 +139,133 @@ export default function Home() {
 
   return (
     <div className={styles.root}>
-      <div className={styles.blueprint} aria-hidden="true" />
-      <div className={styles.grain} aria-hidden="true" />
-
-      {/* Announcement bar */}
-      <div className={styles.announce}>
-        <span className={styles.announceDot} />
-        <span>Dash is coming.</span>
-        <a href="#notify" className={styles.announceLink}>Get early access →</a>
-      </div>
-
-      <div className={styles.wrap}>
-        {/* Nav */}
-        <header className={styles.header}>
-          <div className={styles.mark}>
-            <span className={styles.markDot} />
-            <div className={styles.markText}>
-              <div>
-                <span className={styles.markName}>equinox</span>
-                <span className={styles.markAccent}>ng</span>
-              </div>
-              <span className={styles.markTagline}>Digital Made Easy</span>
-            </div>
-          </div>
-          <nav className={styles.nav}>
-            {NAV_SECTIONS.slice(0, -1).map((id) => (
-              <a
-                key={id}
-                href={`#${id}`}
-                className={`${styles.navLink} ${activeSection === id ? styles.navLinkActive : ""}`}
-              >
-                {id === "lineup" ? "Lineup" : "Outlook"}
-              </a>
-            ))}
+      {/* Nav */}
+      <header className={styles.header}>
+        <a href="#top" className={styles.markBox} aria-label="equinoxng, home">
+          <Mark />
+        </a>
+        <nav className={styles.nav} aria-label="Main">
+          {NAV_SECTIONS.map((id) => (
             <a
-              href="#notify"
-              className={`${styles.navLink} ${activeSection === "notify" ? styles.navLinkActive : ""}`}
+              key={id}
+              href={`#${id}`}
+              className={`${styles.navLink} ${activeSection === id ? styles.navLinkActive : ""}`}
+              aria-current={activeSection === id ? "true" : undefined}
             >
-              Get notified
+              {NAV_LABELS[id]}
             </a>
-            <a href="mailto:hello@equinoxng.com" className={styles.navContact}>Contact</a>
-          </nav>
-        </header>
-
-        {/* Hero */}
-        <section className={styles.hero}>
-          <div className={styles.eyebrow}>A digital services company</div>
-          <h1 className={styles.heroTitle}>
-            Simple, impactful products<br />
-            <em>for everyday life in Africa.</em>
-          </h1>
-          <p className={styles.heroSub}>
-            Equinox Nigeria is a digital services provider building simple, impactful solutions for everyday life. We're starting with cash access and paving the way for a broader suite of digital solutions across Africa and beyond.
-          </p>
-          <div className={styles.heroActions}>
-            <a href="#lineup" className={`${styles.btn} ${styles.btnPrimary}`}>View the lineup →</a>
-            <a href="#notify" className={styles.heroTextLink}>Get notified</a>
-          </div>
-          <a href="#lineup" className={styles.scrollHint} aria-label="Scroll down">
-            <IconChevron />
+          ))}
+          <span className={styles.navRule} aria-hidden="true" />
+          <a href="mailto:hello@equinoxng.com" className={styles.navLink}>
+            Contact
           </a>
-        </section>
+        </nav>
+        <a href="#waitlist" className={styles.navCta}>
+          Join waitlist
+        </a>
+      </header>
 
-        {/* Trust strip */}
-        <div className={styles.trustStrip}>
-          <span className={styles.trustItem}>
-            <span className={styles.trustDot} />
-            CAC Registered · Private Company Limited by Shares
-          </span>
-          <span className={styles.trustItem}>
-            <span className={styles.trustDot} />
-            Incorporated August 2025
-          </span>
-          <span className={styles.trustItem}>
-            <span className={styles.trustDot} />
-            www.equinoxng.com
-          </span>
+      {/* Hero */}
+      <section className={styles.hero} id="top">
+        <h1 className={styles.wordmark}>equinoxng</h1>
+        <p className={styles.heroLine}>
+          Simple, impactful products <em>for everyday life.</em>
+        </p>
+        <p className={styles.heroSub}>
+          Equinox Nigeria is a digital services provider. We build things people actually
+          use — and we&apos;re starting with Dash.
+        </p>
+        <div className={styles.heroActions}>
+          <a href="#waitlist" className={styles.btnPrimary}>
+            Join the waitlist
+          </a>
+          <a href="#dash" className={styles.btnGhost}>
+            About Dash
+          </a>
         </div>
+        <p className={styles.heroMeta}>
+          Lagos, Nigeria <span aria-hidden="true">·</span> Founded 2025{" "}
+          <span aria-hidden="true">·</span> Digital services
+        </p>
+      </section>
 
-        {/* Stat strip */}
-        <div className={styles.statStrip}>
-          {stats.map((s) => (
-            <div key={s.label} className={styles.statItem}>
-              <span className={styles.statValue}>{s.value}</span>
-              <span className={styles.statLabel}>{s.label}</span>
+      {/* Marquee */}
+      <div className={styles.marquee} aria-hidden="true">
+        <div className={styles.marqueeTrack}>
+          {[0, 1].map((copy) => (
+            <div className={styles.marqueeGroup} key={copy}>
+              {marquee.map((item) => (
+                <span className={styles.marqueeItem} key={item}>
+                  <span className={styles.marqueeDot} />
+                  {item}
+                </span>
+              ))}
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Build log */}
-        <section id="lineup">
-          <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Build log</h2>
-            <span className={styles.sectionTag}>1 in development · 4 coming soon</span>
-          </div>
+      {/* Dash */}
+      <div className={styles.sectionBar} id="dash">
+        <span className={styles.sectionIndex}>01 / Dash</span>
+        <span className={styles.sectionNote}>In development</span>
+      </div>
 
-          <div className={styles.log}>
-            <div className={`${styles.logRow} ${styles.logHead}`}>
-              <div className={styles.logCell}>Status</div>
-              <div className={styles.logCell}>Product</div>
-              <div className={styles.logCell}>Built for</div>
-              <div className={`${styles.logCell} ${styles.logCellRight}`}>ID</div>
+      <section className={styles.dash}>
+        <div className={styles.dashMain}>
+          <h2 className={styles.dashName}>Dash</h2>
+          <p className={styles.dashTag}>Cash delivery</p>
+          <p className={styles.dashBody}>
+            Send and receive cash in minutes. Peer-to-peer cash delivery, built for speed
+            and trust — the fastest way to move cash to anyone, anywhere.
+          </p>
+          <a href="#waitlist" className={styles.btnPrimary}>
+            Join the Dash waitlist
+          </a>
+        </div>
+        <dl className={styles.specs}>
+          {dashSpecs.map((s) => (
+            <div className={styles.specRow} key={s.label}>
+              <dt className={styles.specLabel}>{s.label}</dt>
+              <dd className={styles.specValue}>{s.value}</dd>
             </div>
-            {products.map((p) => (
-              <div
-                key={p.id}
-                className={`${styles.logRow} ${p.featured ? styles.logRowFeatured : ""}`}
-              >
-                <div className={styles.logCell}>
-                  <span className={`${styles.status} ${styles[`status_${p.status}`]}`}>
-                    {p.statusLabel}
-                  </span>
-                </div>
-                <div className={styles.logCell}>
-                  <p className={styles.prodName}>{p.name}</p>
-                  <p className={styles.prodTagline}>{p.tagline}</p>
-                  <p className={styles.prodDesc}>{p.desc}</p>
-                  {p.cta && (
-                    <a href={p.cta.href} className={styles.prodCta}>{p.cta.label} →</a>
-                  )}
-                </div>
-                <div className={`${styles.logCell} ${styles.logCellMeta}`}>{p.target}</div>
-                <div className={`${styles.logCell} ${styles.logCellRight} ${styles.logCellMeta}`}>{p.id}</div>
-              </div>
-            ))}
-          </div>
-        </section>
+          ))}
+        </dl>
+      </section>
 
-        {/* Outlook */}
-        <section id="outlook">
-          <div className={styles.sectionHead}>
-            <h2 className={styles.sectionTitle}>Where this goes</h2>
-            <span className={styles.sectionTag}>Product outlook</span>
-          </div>
-          <div className={styles.outlookGrid}>
-            {outlook.map((o) => (
-              <div key={o.num} className={styles.outlookItem}>
-                <div className={styles.outlookNum}>{o.num}</div>
-                <h3 className={styles.outlookTitle}>{o.title}</h3>
-                <p className={styles.outlookBody}>{o.body}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+      {/* Approach */}
+      <div className={styles.sectionBar} id="approach">
+        <span className={styles.sectionIndex}>02 / Approach</span>
+        <span className={styles.sectionNote}>How we build</span>
+      </div>
 
-        {/* CTA */}
-        <section className={styles.ctaBlock} id="notify">
-          <h2 className={styles.ctaTitle}>Dash is coming. Get early access.</h2>
-          <p className={styles.ctaSub}>Be the first to know when we launch. No spam, just the signal.</p>
-          <form className={styles.signup} onSubmit={handleWaitlistSubmit}>
+      <section className={styles.approach}>
+        {approach.map((a) => (
+          <article className={styles.approachItem} key={a.num}>
+            <span className={styles.approachNum}>{a.num}</span>
+            <h3 className={styles.approachTitle}>{a.title}</h3>
+            <p className={styles.approachBody}>{a.body}</p>
+          </article>
+        ))}
+      </section>
+
+      {/* Waitlist */}
+      <div className={styles.sectionBar} id="waitlist">
+        <span className={styles.sectionIndex}>03 / Waitlist</span>
+        <span className={styles.sectionNote}>No spam, just the signal</span>
+      </div>
+
+      <section className={styles.cta}>
+        <h2 className={styles.ctaTitle}>
+          Dash is coming. <em>Get early access.</em>
+        </h2>
+        <form className={styles.signup} onSubmit={handleWaitlistSubmit}>
+          <label htmlFor="waitlist-email" className={styles.signupLabel}>
+            Email address
+          </label>
+          <div className={styles.signupRow}>
             <input
+              id="waitlist-email"
               type="email"
               placeholder="you@example.com"
               required
@@ -327,49 +273,69 @@ export default function Home() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               disabled={waitlistStatus === "loading" || waitlistStatus === "success"}
+              aria-describedby={waitlistStatus === "error" ? "waitlist-error" : undefined}
+              aria-invalid={waitlistStatus === "error" ? "true" : undefined}
             />
             <button
               type="submit"
-              className={`${styles.btn} ${styles.btnPrimary}`}
+              className={styles.btnPrimary}
               disabled={waitlistStatus === "loading" || waitlistStatus === "success"}
             >
               {waitlistStatus === "success"
-                ? "Added ✓"
+                ? "You're on the list"
                 : waitlistStatus === "loading"
                 ? "Adding…"
                 : "Notify me"}
             </button>
-          </form>
-          {waitlistStatus === "error" && (
-            <p className={styles.privacyNote}>{waitlistError}</p>
-          )}
-          <p className={styles.privacyNote}>We don't share your email. Ever.</p>
-        </section>
+          </div>
+        </form>
 
-        <footer className={styles.footer}>
-          <div className={styles.footerLeft}>
-            <span>© {new Date().getFullYear()} equinoxng Digital Services Ltd.</span>
-<div className={styles.footerSocial}>
-              <a href="https://linkedin.com/company/equinoxng" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink} aria-label="LinkedIn">
-                <IconLinkedIn /> LinkedIn
-              </a>
-              <span className={styles.footerDivider}>·</span>
-              <a href="https://instagram.com/equinoxng" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink} aria-label="Instagram">
-                <IconInstagram /> Instagram
-              </a>
-              <span className={styles.footerDivider}>·</span>
-              <a href="https://web.facebook.com/profile.php?id=61584780592423" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink} aria-label="Facebook">
-                <IconFacebook /> Facebook
-              </a>
-            </div>
-          </div>
-          <div className={styles.footerRight}>
-            <span className={styles.footerLabel}>Get in touch</span>
-            <a href="mailto:hello@equinoxng.com" className={styles.footerLink}>hello@equinoxng.com</a>
-            <a href="https://www.equinoxng.com" className={styles.footerLink}>www.equinoxng.com</a>
-          </div>
-        </footer>
-      </div>
+        <div className={styles.formStatus} role="status" aria-live="polite">
+          {waitlistStatus === "error" && (
+            <p id="waitlist-error" className={styles.formError}>
+              {waitlistError}
+            </p>
+          )}
+          {waitlistStatus === "success" && (
+            <p className={styles.formSuccess}>
+              We&apos;ll email you the moment Dash is live.
+            </p>
+          )}
+        </div>
+
+        <p className={styles.privacyNote}>We don&apos;t share your email. Ever.</p>
+      </section>
+
+      {/* Footer */}
+      <footer className={styles.footer}>
+        <div className={styles.footerLeft}>
+          <span className={styles.footerMark}>
+            <Mark />
+          </span>
+          <span>© {new Date().getFullYear()} equinoxng Digital Services Ltd.</span>
+        </div>
+
+        <div className={styles.footerSocial}>
+          <a href="https://linkedin.com/company/equinoxng" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink}>
+            <IconLinkedIn /> LinkedIn
+          </a>
+          <a href="https://instagram.com/equinoxng" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink}>
+            <IconInstagram /> Instagram
+          </a>
+          <a href="https://web.facebook.com/profile.php?id=61584780592423" target="_blank" rel="noopener noreferrer" className={styles.footerSocialLink}>
+            <IconFacebook /> Facebook
+          </a>
+        </div>
+
+        <div className={styles.footerRight}>
+          <a href="mailto:hello@equinoxng.com" className={styles.footerLink}>
+            hello@equinoxng.com
+          </a>
+          <a href="https://www.equinoxng.com" className={styles.footerLink}>
+            www.equinoxng.com
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }
